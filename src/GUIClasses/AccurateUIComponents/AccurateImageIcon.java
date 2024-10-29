@@ -71,8 +71,14 @@ public class AccurateImageIcon extends ImageIcon {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         // Mirror the image if requested
-        g2d.translate((xMirrored ? c.getWidth() : 0), (yMirrored ? c.getHeight() : 0));
-        g2d.scale((xMirrored ? -1 : 1), (yMirrored ? -1 : 1));
+        g2d.translate(
+                (xMirrored ? c.getWidth() : 0),
+                (yMirrored ? c.getHeight() : 0)
+        );
+        g2d.scale(
+                (xMirrored ? -1 : 1),
+                (yMirrored ? -1 : 1)
+        );
 
         // Painting the image
         g2d.drawImage(getImage(), 0, 0, c.getWidth(), c.getHeight(), c);
