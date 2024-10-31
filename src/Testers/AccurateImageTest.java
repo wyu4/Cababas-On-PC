@@ -61,10 +61,11 @@ public class AccurateImageTest implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Point mousePos = MouseInfo.getPointerInfo().getLocation();
         frame.setSize(
-                mousePos.x-10,
-                mousePos.y-10
+                Math.clamp(mousePos.x-100, 10, Integer.MAX_VALUE),
+                Math.clamp(mousePos.y-100, 10, Integer.MAX_VALUE)
         );
         label.setSize(frame.getSize());
+        label.setLocation(frame.getAccurateSize().multiply(0.5f));
         frame.repaint();
     }
 }

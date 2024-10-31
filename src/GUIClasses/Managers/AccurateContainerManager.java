@@ -59,28 +59,16 @@ public class AccurateContainerManager implements AccurateContainer {
 
     @Override
     public void setLocation(float x, float y) {
-        accurateLocation.set(
-                x - (accurateSize.getX() * anchorPoint.getX()),
-                y - (accurateSize.getY() * anchorPoint.getY())
+        accurateLocation.set(x, y);
+        superMethods.callSuperSetLocation(
+                (int)(x - (accurateSize.getX() * anchorPoint.getX())),
+                (int)(y - (accurateSize.getY() * anchorPoint.getY()))
         );
-        superMethods.callSuperSetLocation(accurateLocation.getXAsInt(), accurateLocation.getYAsInt());
     }
 
     @Override
     public void setLocation(FloatCoordinate f) {
         setLocation(f.getX(), f.getY());
-    }
-
-    @Override
-    public void setBounds(Rectangle r) {
-        setBounds(r.x, r.y, r.width, r.height);
-    }
-
-    @Override
-    public void setBounds(int x, int y, int width, int height) {
-        superMethods.callSuperSetBounds(x, y, width, height);
-        accurateLocation.set(x, y);
-        accurateSize.set(width, height);
     }
 
     @Override
@@ -102,10 +90,6 @@ public class AccurateContainerManager implements AccurateContainer {
     @Override
     public FloatCoordinate getAccurateLocation(FloatCoordinate rv) {
         rv.set(accurateLocation);
-        rv.set(
-                rv.getX() + (accurateSize.getX() * anchorPoint.getX()),
-                rv.getY() + (accurateSize.getY() * anchorPoint.getY())
-        );
         return rv;
     }
 

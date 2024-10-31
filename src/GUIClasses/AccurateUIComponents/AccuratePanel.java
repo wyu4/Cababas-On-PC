@@ -68,16 +68,6 @@ public class AccuratePanel extends JPanel implements AccurateContainer, SuperCon
     }
 
     @Override
-    public void setBounds(Rectangle r) {
-        manager.setBounds(r);
-    }
-
-    @Override
-    public void setBounds(int x, int y, int width, int height) {
-        manager.setBounds(x, y, width, height);
-    }
-
-    @Override
     public void setAnchorPoint(float x, float y) {
         manager.setAnchorPoint(x, y);
     }

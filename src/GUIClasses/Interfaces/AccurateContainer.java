@@ -59,21 +59,6 @@ public interface AccurateContainer {
     public void setLocation(FloatCoordinate f);
 
     /**
-     * Move and resize the component.
-     * @param r Object containing a new location and size
-     */
-    public void setBounds(Rectangle r);
-
-    /**
-     * Move and resize the component.
-     * @param x New X-value
-     * @param y New Y-value
-     * @param width New width
-     * @param height new Height
-     */
-    public void setBounds(int x, int y, int width, int height);
-
-    /**
      * Set the anchor point of this component.
      * @param x X-value
      * @param y Y-value

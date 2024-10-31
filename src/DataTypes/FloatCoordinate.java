@@ -144,6 +144,15 @@ public class FloatCoordinate {
     }
 
     /**
+     * Multiply both XY values by a multiplier.
+     * @param multiplier Multiplier
+     * @return New {@code FloatCoordinate} object storing products.
+     */
+    public FloatCoordinate multiply(float multiplier) {
+        return new FloatCoordinate(x * multiplier, y * multiplier);
+    }
+
+    /**
      * Create a deep copy of this object.
      * @return A new {@code FloatCoordinate} object with the same properties as this object.
      */
