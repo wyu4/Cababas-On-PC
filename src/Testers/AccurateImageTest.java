@@ -60,7 +60,6 @@ public class AccurateImageTest implements ActionListener {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 loopMirror = false;
-                throw new RuntimeException(e);
             }
         }
     }
