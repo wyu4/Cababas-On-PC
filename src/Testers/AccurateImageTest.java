@@ -29,7 +29,7 @@ public class AccurateImageTest {
 
         BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.Cababas_PNG);
         AccurateImageIcon accImg = new AccurateImageIcon(img);
-        accImg.setMirrored(true);
+        accImg.setMirrored(false, true);
 
         label.setIcon(accImg);
 
@@ -45,7 +45,7 @@ public class AccurateImageTest {
 
         Thread.sleep(2000);
 
-        accImg.setMirrored(false);
+        accImg.setMirrored(false, true);
 
         Thread.sleep(2000);
 
