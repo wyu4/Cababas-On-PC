@@ -17,7 +17,7 @@ public class AccurateImageTest implements ActionListener {
     private final AccurateLabel label;
     private final AccurateImageIcon accImg;
 
-    public AccurateImageTest() throws InterruptedException {
+    public AccurateImageTest() {
         System.out.println("Creating UI...");
 
         frame = new AccurateFrame("TestFrame");
@@ -37,7 +37,6 @@ public class AccurateImageTest implements ActionListener {
         BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.Cababas_PNG);
         accImg = new AccurateImageIcon(img);
         accImg.setMode(AccurateImageIcon.PaintMode.STRETCH);
-//        accImg.setMirrored(false, true);
 
         label.setIcon(accImg);
 
@@ -47,14 +46,27 @@ public class AccurateImageTest implements ActionListener {
 
         Timer runtime = new Timer(1, this);
         runtime.start();
+
+        boolean loopMirror = true;
+        while (loopMirror) {
+            try {
+                accImg.setMirrored(false, false);
+                Thread.sleep(2000);
+                accImg.setMirrored(true, false);
+                Thread.sleep(2000);
+                accImg.setMirrored(true, true);
+                Thread.sleep(2000);
+                accImg.setMirrored(false, true);
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                loopMirror = false;
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     public static void main(String[] args) {
-        try {
-            new AccurateImageTest();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        new AccurateImageTest();
     }
 
     @Override
