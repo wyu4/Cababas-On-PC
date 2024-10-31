@@ -2,16 +2,38 @@ package GUIClasses.AccurateUIComponents;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.ImageObserver;
 
 public class AccurateImageIcon extends ImageIcon {
+    /** Different ways that the image can be painted onto the screen. */
+    public enum PaintMode {
+        /** Default ImageIcon behavior. */
+        DEFAULT,
+        /** Stretch the image to fill its parent container. */
+        STRETCH,
+        /** Resize the image to fill its parent container while retaining its origin size ratio.  */
+        CONSTANT_RATIO
+    }
+
     private boolean xMirrored, yMirrored;
+    private PaintMode mode;
 
     /**
      * Create a new AccurateImageIcon object.
      * @param image The image
      */
     public AccurateImageIcon(Image image) {
+        this(image, PaintMode.DEFAULT);
+    }
+
+    /**
+     * Create a new AccurateImageIcon object.
+     * @param image The image
+     * @param mode The selected paint mode
+     */
+    public AccurateImageIcon(Image image, PaintMode mode) {
         super(image);
+        this.mode = mode;
         xMirrored = false;
         yMirrored = false;
     }
@@ -44,6 +66,15 @@ public class AccurateImageIcon extends ImageIcon {
     }
 
     /**
+     * Set the image's paint mode.
+     * @param mode {@code enum} representing the paint mode that should be used.
+     * @see PaintMode
+     */
+    public void setMode(PaintMode mode) {
+        this.mode = mode;
+    }
+
+    /**
      * Get the image's mirrored state
      * @return {@code true} if the image should be mirrored on the X axis,
      * {@code false} if the image should not be mirrored.
@@ -59,6 +90,15 @@ public class AccurateImageIcon extends ImageIcon {
      */
     public boolean getYMirrored() {
         return yMirrored;
+    }
+
+    /**
+     * Get the current set paint mode
+     * @return {@code enum}
+     * @see PaintMode
+     */
+    public PaintMode getMode() {
+        return mode;
     }
 
     @Override
@@ -81,6 +121,40 @@ public class AccurateImageIcon extends ImageIcon {
         );
 
         // Painting the image
-        g2d.drawImage(getImage(), 0, 0, c.getWidth(), c.getHeight(), c);
+        if (mode == null) {
+            mode = PaintMode.DEFAULT;
+        }
+
+        switch (mode) {
+            case STRETCH -> paintIconStretch(c, g2d, x, y);
+            case CONSTANT_RATIO -> paintIconRatio(c, g2d, x, y);
+            case DEFAULT -> super.paintIcon(c, g, x, y);
+        }
+    }
+
+    private synchronized void paintIconStretch(Component c, Graphics2D g2d, int x, int y) {
+        g2d.drawImage(getImage(), 0, 0, c.getWidth(), c.getHeight(), (getImageObserver() == null ? c : getImageObserver()));
+    }
+
+    private synchronized void paintIconRatio(Component c, Graphics2D g2d, int x, int y) {
+        ImageObserver observer = (getImageObserver() == null ? c : getImageObserver());
+
+        int cw = c.getWidth();
+        int ch = c.getHeight();
+        int iw = getIconWidth();
+        int ih = getIconHeight();
+
+        float ratioW = (((float) cw)/iw);
+        float ratioH = (((float) ch)/ih);
+        float ratio = Math.min(ratioW, ratioH);
+
+        // New image size
+        int newIw = Math.round(ratio*iw);
+        int newIh = Math.round(ratio*ih);
+
+        int newX = (cw/2)-(newIw/2);
+        int newY = (ch/2)-(newIh/2);
+
+        g2d.drawImage(getImage(), newX, newY, newIw, newIh, observer); // Use the set image observer instead
     }
 }

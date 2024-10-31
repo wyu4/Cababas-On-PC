@@ -5,54 +5,48 @@ import AppClasses.ResourceClasses.ResourcesManager;
 import GUIClasses.AccurateUIComponents.AccurateFrame;
 import GUIClasses.AccurateUIComponents.AccurateImageIcon;
 import GUIClasses.AccurateUIComponents.AccurateLabel;
-import GUIClasses.AccurateUIComponents.AccuratePanel;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-public class AccurateImageTest {
+public class AccurateImageTest implements ActionListener {
+    private final AccurateFrame frame;
+    private final AccurateLabel label;
+    private final AccurateImageIcon accImg;
+
     public AccurateImageTest() throws InterruptedException {
         System.out.println("Creating UI...");
 
-        AccurateFrame frame = new AccurateFrame("TestFrame");
+        frame = new AccurateFrame("TestFrame");
         frame.setDefaultCloseOperation(AccurateFrame.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
         frame.getContentPane().setBackground(Color.BLACK);
         frame.setBackground(Color.BLACK);
-        frame.setSize(200, 200);
-        frame.setLocation(50, 50);
+        frame.setSize(0, 0);
+        frame.setLocation(0, 0);
 
-        AccurateLabel label = new AccurateLabel("TestLabel");
+        label = new AccurateLabel("TestLabel");
         label.setBackground(Color.WHITE);
-        label.setSize(200, 100);
-        label.setLocation(100, 100);
+        label.setSize(0, 0);
+        label.setLocation(0, 0);
+        label.setAnchorPoint(0.5f, 0.5f);
 
         BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.Cababas_PNG);
-        AccurateImageIcon accImg = new AccurateImageIcon(img);
-        accImg.setMirrored(false, true);
+        accImg = new AccurateImageIcon(img);
+        accImg.setMode(AccurateImageIcon.PaintMode.STRETCH);
+//        accImg.setMirrored(false, true);
 
         label.setIcon(accImg);
 
         frame.add(label);
         frame.setVisible(true);
-        frame.revalidate();
-
-        Thread.sleep(1000);
-
-        System.out.println("Anchor point changed...");
-        label.setAnchorPoint(1f, 1f);
         frame.repaint();
 
-        Thread.sleep(2000);
-
-        accImg.setMirrored(false, true);
-
-        Thread.sleep(2000);
-
-        System.out.println("Closing frame and (hopefully) terminating program...");
-        frame.closeFrame();
-
-        System.exit(0); // In case frame closing does not exit out.
+        Timer runtime = new Timer(1, this);
+        runtime.start();
     }
 
     public static void main(String[] args) {
@@ -61,5 +55,16 @@ public class AccurateImageTest {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Point mousePos = MouseInfo.getPointerInfo().getLocation();
+        frame.setSize(
+                mousePos.x-10,
+                mousePos.y-10
+        );
+        label.setSize(frame.getSize());
+        frame.repaint();
     }
 }
