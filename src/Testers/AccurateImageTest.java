@@ -24,7 +24,7 @@ public class AccurateImageTest implements ActionListener {
         frame.setDefaultCloseOperation(AccurateFrame.EXIT_ON_CLOSE);
         frame.setUndecorated(true);
         frame.getContentPane().setBackground(Color.BLACK);
-        frame.setBackground(Color.BLACK);
+        frame.setBackground(new Color(0, 0, 0, 155));
         frame.setSize(0, 0);
         frame.setLocation(0, 0);
 
@@ -75,8 +75,11 @@ public class AccurateImageTest implements ActionListener {
                 Math.clamp(mousePos.x-100, 10, Integer.MAX_VALUE),
                 Math.clamp(mousePos.y-100, 10, Integer.MAX_VALUE)
         );
-        label.setSize(frame.getSize());
-        label.setLocation(frame.getAccurateSize().multiply(0.5f));
+        label.setSize(frame.getAccurateSize().multiply(0.25f));
+        label.setLocation(
+                frame.getAccurateSize().getX()*1,
+                frame.getAccurateSize().getY()*0.5f
+        );
         frame.repaint();
     }
 }
