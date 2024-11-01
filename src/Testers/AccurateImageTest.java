@@ -34,7 +34,7 @@ public class AccurateImageTest implements ActionListener {
         label.setLocation(0, 0);
         label.setAnchorPoint(0.5f, 0.5f);
 
-        BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.Cababas_PNG);
+        BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.TEST_TXT);
         accImg = new AccurateImageIcon(img);
         accImg.setMode(AccurateImageIcon.PaintMode.STRETCH);
 

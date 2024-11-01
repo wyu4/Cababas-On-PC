@@ -21,7 +21,7 @@ public class ResourcesManager {
      * @param file File to read.
      * @throws IOException If an I/O exception occurs when reading the file's byte data
      */
-    private static void loadFile(File file) throws IOException {
+    public static void loadFile(File file) throws IOException {
         byte[] tempData = new byte[0]; // Temporary var to store byte data
 
         // Check if file is valid, is readable, and isn't already loaded.
@@ -62,9 +62,10 @@ public class ResourcesManager {
      * @param e Enum corresponding to a resource file.
      * @return A file object
      */
-    private static File enumToFile(ResourceEnum e) {
+    public static File enumToFile(ResourceEnum e) {
         return new File(switch (e) {
             case Cababas_PNG -> RESOURCE_DIR + "\\Cababas.png";
+            case TEST_TXT -> RESOURCE_DIR + "\\test.txt";
         });
     }
 
@@ -98,11 +99,14 @@ public class ResourcesManager {
         BufferedImage image = new BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB);
 
         try {
-            image = ImageIO.read(new ByteArrayInputStream(bytes));
+            BufferedImage temp = ImageIO.read(new ByteArrayInputStream(bytes));
+            if (temp == null) {
+                throw new IOException("Byte data could not be converted into image.");
+            } else {
+                image = temp;
+            }
         } catch (IOException ex) {
-            RuntimeException exception = new RuntimeException(ex);
-            System.out.println("Could not open image.");
-            throw exception;
+            System.out.println("Could not open image " + e + ": " + ex.getMessage());
         }
 
         return image;
