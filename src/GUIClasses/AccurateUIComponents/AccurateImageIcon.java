@@ -11,8 +11,10 @@ public class AccurateImageIcon extends ImageIcon {
         DEFAULT,
         /** Stretch the image to fill its parent container. */
         STRETCH,
+        /** Resize the image to while retaining its origin size ratio.  */
+        RATIO,
         /** Resize the image to fill its parent container while retaining its origin size ratio.  */
-        CONSTANT_RATIO
+        RATIO_FILL
     }
 
     private boolean xMirrored, yMirrored;
@@ -127,7 +129,8 @@ public class AccurateImageIcon extends ImageIcon {
 
         switch (mode) {
             case STRETCH -> paintIconStretch(c, g2d, x, y);
-            case CONSTANT_RATIO -> paintIconRatio(c, g2d, x, y);
+            case RATIO -> paintIconRatio(c, g2d, x, y);
+            case RATIO_FILL -> paintIconRatioFill(c, g2d, x, y);
             case DEFAULT -> super.paintIcon(c, g, x, y);
         }
     }
@@ -147,6 +150,28 @@ public class AccurateImageIcon extends ImageIcon {
         float ratioW = (((float) cw)/iw);
         float ratioH = (((float) ch)/ih);
         float ratio = Math.min(ratioW, ratioH);
+
+        // New image size
+        int newIw = Math.round(ratio*iw);
+        int newIh = Math.round(ratio*ih);
+
+        int newX = (cw/2)-(newIw/2);
+        int newY = (ch/2)-(newIh/2);
+
+        g2d.drawImage(getImage(), newX, newY, newIw, newIh, observer); // Use the set image observer instead
+    }
+
+    private synchronized void paintIconRatioFill(Component c, Graphics2D g2d, int x, int y) {
+        ImageObserver observer = (getImageObserver() == null ? c : getImageObserver());
+
+        int cw = c.getWidth();
+        int ch = c.getHeight();
+        int iw = getIconWidth();
+        int ih = getIconHeight();
+
+        float ratioW = (((float) cw)/iw);
+        float ratioH = (((float) ch)/ih);
+        float ratio = Math.max(ratioW, ratioH);
 
         // New image size
         int newIw = Math.round(ratio*iw);
