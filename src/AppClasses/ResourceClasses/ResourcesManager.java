@@ -65,6 +65,7 @@ public class ResourcesManager {
     public static File enumToFile(ResourceEnum e) {
         return new File(switch (e) {
             case Cababas_PNG -> RESOURCE_DIR + "\\Cababas.png";
+            case SplashBackground_PNG -> RESOURCE_DIR + "\\SplashBackground.png";
             case TEST_TXT -> RESOURCE_DIR + "\\test.txt";
         });
     }
