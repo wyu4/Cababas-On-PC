@@ -34,9 +34,9 @@ public class AccurateImageTest implements ActionListener {
         label.setLocation(0, 0);
         label.setAnchorPoint(0.5f, 0.5f);
 
-        BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.TEST_TXT);
+        BufferedImage img = ResourcesManager.getAsBufferedImage(ResourceEnum.Cababas_PNG);
         accImg = new AccurateImageIcon(img);
-        accImg.setMode(AccurateImageIcon.PaintMode.STRETCH);
+        accImg.setMode(AccurateImageIcon.PaintMode.RATIO_FILL);
 
         label.setIcon(accImg);
 
@@ -75,9 +75,9 @@ public class AccurateImageTest implements ActionListener {
                 Math.clamp(mousePos.x-100, 10, Integer.MAX_VALUE),
                 Math.clamp(mousePos.y-100, 10, Integer.MAX_VALUE)
         );
-        label.setSize(frame.getAccurateSize().multiply(0.25f));
+        label.setSize(frame.getAccurateSize());
         label.setLocation(
-                frame.getAccurateSize().getX()*1,
+                frame.getAccurateSize().getX()*0.5f,
                 frame.getAccurateSize().getY()*0.5f
         );
         frame.repaint();
